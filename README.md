@@ -10,11 +10,9 @@ php composer.phar require "mitrichius/codeception-allure-rest-log"
 or add require string to composer.json
 
 ```json
-...
 "require-dev": {
 	"mitrichius/codeception-allure-rest-log": "dev-master",
 }
-...
 ```
 ### Configuration
 Enable extension in codeception global config codeception.yml
@@ -25,3 +23,6 @@ extensions:
     - Codeception\Extension\AllureRestLogExtension
     ...
 ```
+
+### Issues
+Extension uses fork of allure-codeception to work with codeception 2.2

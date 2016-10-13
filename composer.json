@@ -16,10 +16,16 @@
       "email": "mitrichius@gmail.com"
     }
   ],
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/Mitrichius/allure-codeception.git"
+    }
+  ],
   "require": {
     "php": ">=5.4",
-    "codeception/codeception": ">=2.1.0",
-    "allure-framework/allure-codeception": ">=1.2.0"
+    "codeception/codeception": ">=2.2.0",
+    "allure-framework/allure-codeception": "dev-master"
   },
   "autoload": {
     "psr-4": {
