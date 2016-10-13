@@ -25,4 +25,5 @@ extensions:
 ```
 
 ### Issues
-Extension uses fork of allure-codeception to work with codeception 2.2
+Extension uses fork of allure-codeception to work with codeception 2.2:
+https://github.com/Mitrichius/allure-codeception
