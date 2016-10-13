@@ -1,0 +1,29 @@
+{
+  "name": "mitrichius/codeception-allure-rest-log",
+  "description": "Codeception extension adding REST request log to Allure Framework for failed tests",
+  "keywords": [
+    "codeception",
+    "allure-framework",
+    "testing",
+    "test-reporting"
+  ],
+  "homepage": "https://github.com/mitrichius/codeception-allure-rest-log",
+  "type": "package",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Dmitry Kolosov",
+      "email": "mitrichius@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.4",
+    "codeception/codeception": ">=2.1.0",
+    "allure-framework/allure-codeception": ">=1.2.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Codeception\\Extension\\": "src/"
+    }
+  }
+}
