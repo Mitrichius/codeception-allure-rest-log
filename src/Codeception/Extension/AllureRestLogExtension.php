@@ -153,18 +153,17 @@ class AllureRestLogExtension extends Extension
                 $url = ($request->getUri());
             };
 
-            $data = [
+            return [
                 'date' => $responseHeaders['Date'][0],
                 'url' => $url,
                 'params' => $rest->params,
                 'code' => $code,
                 'response' => $rest->response,
             ];
-
-            return $data;
         }
-        catch (Exception $e)
+        catch (\Exception $e)
         {
+            // ignored
         }
     }
 
@@ -189,11 +188,9 @@ class AllureRestLogExtension extends Extension
             '<pre>' . $paramsPretty . '</pre>' .
             '<div><b>Response: ' . \Codeception\Util\HttpCode::getDescription($data['code']) . '</b>';
         if (mb_strlen($data['response'], 'utf-8') > 500) {
-            $result .= '<details><pre>' . $data['response'] . '</pre></details>';
-        } else {
-            $result .= '<pre>' . $data['response'] . '</pre></div>';
+            return $result . '<details><pre>' . $data['response'] . '</pre></details></div>';
         }
-        return $result;
+        return $result . '<pre>' . $data['response'] . '</pre></div>';
     }
 
     /**
@@ -212,7 +209,7 @@ class AllureRestLogExtension extends Extension
             }
 
             if (is_array($value)) {
-                $str .= $this->printArray($value, $key);
+                $str .= $this->printArray($value, $key) . PHP_EOL;
             } else {
                 if ($value === null) {
                     $value = 'null';
