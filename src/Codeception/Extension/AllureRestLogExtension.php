@@ -2,7 +2,7 @@
 namespace Codeception\Extension;
 
 use Yandex\Allure\Adapter\Support\AttachmentSupport;
-use Codeception\Extension;
+use Codeception\Platform\Extension;
 use Codeception\Event\FailEvent;
 use Codeception\Event\StepEvent;
 use Codeception\Event\TestEvent;
