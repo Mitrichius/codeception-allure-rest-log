@@ -8,7 +8,6 @@
     "test-reporting"
   ],
   "homepage": "https://github.com/mitrichius/codeception-allure-rest-log",
-  "type": "package",
   "license": "MIT",
   "authors": [
     {
