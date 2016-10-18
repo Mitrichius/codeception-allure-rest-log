@@ -15,12 +15,6 @@
       "email": "mitrichius@gmail.com"
     }
   ],
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/Mitrichius/allure-codeception.git"
-    }
-  ],
   "require": {
     "php": ">=5.4",
     "codeception/codeception": ">=2.2.0",
