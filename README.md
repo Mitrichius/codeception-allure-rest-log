@@ -23,3 +23,6 @@ extensions:
     - Codeception\Extension\AllureRestLogExtension
     ...
 ```
+
+### Issues
+Some requests may be skipped if one codeception step contains two or more requests (e.g. method from helper)
