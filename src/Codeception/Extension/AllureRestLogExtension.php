@@ -32,24 +32,13 @@ class AllureRestLogExtension extends Extension
     ];
 
     /**
-     * Get test info and create first log entry
+     * Get test info
      *
      * @param TestEvent $e
      */
     public function testStarted($e)
     {
-        $test = $e->getTest();
-        $env = $test->getMetadata()->getCurrent('env');
-        if ($env) {
-            $envCommand = '--env ' . $env . ' ';
-        } else {
-            $envCommand = '';
-        }
-        $fileName = $test->getMetadata()->getFilename();
-        $path = substr($fileName, strpos($fileName, 'tests'));
-        $this->log = [
-            'codecept run ' . $envCommand . '-d ' . $path . ':<b>' . $test->getName() . '</b>'
-        ];
+        $this->log = [];
     }
 
     /**
@@ -101,7 +90,7 @@ class AllureRestLogExtension extends Extension
     {
         $requestData = $this->getRequestInfo();
         if ($requestData) {
-            $this->addToLog($this->formatRequestData($requestData));
+            $this->addToLog($requestData);
         }
     }
 
@@ -112,12 +101,12 @@ class AllureRestLogExtension extends Extension
      */
     protected function attachLog($e)
     {
-        $data = '';
-        $log = array_unique($this->log);
+        $data = $this->getCommandRunTest($e);
+        $log = $this->log;
         if (count($log) > 1) { // skip empty files - with only testname entry
             $this->addToLog('Fail:' . $e->getFail()->getMessage());
             foreach ($log as $entry) {
-                $data .= $entry . '<hr style="margin: 20px 0">';
+                $data .= $this->formatRequestData($entry) . '<hr style="margin: 20px 0">';
             }
             $logName = 'requestLog' . time() . $e->getTest()->getName();
             $logFile = codecept_output_dir($logName);
@@ -153,18 +142,57 @@ class AllureRestLogExtension extends Extension
                 $url = ($request->getUri());
             };
 
-            return [
+            $info = [
                 'date' => $responseHeaders['Date'][0],
                 'url' => $url,
                 'params' => $rest->params,
                 'code' => $code,
                 'response' => $rest->response,
             ];
+            if (!$this->compareWithPreviousLog($info)) {
+                return $info;
+            }
+
         }
         catch (\Exception $e)
         {
             // ignored
         }
+    }
+
+    /**
+     * Get command for codeception run for first log entry
+     *
+     * @param FailEvent $e
+     * @return string
+     */
+    protected function getCommandRunTest($e)
+    {
+        $test = $e->getTest();
+        $env = $test->getMetadata()->getCurrent('env');
+        if ($env) {
+            $envCommand = '--env ' . $env . ' ';
+        } else {
+            $envCommand = '';
+        }
+        $fileName = $test->getMetadata()->getFilename();
+        $path = substr($fileName, strpos($fileName, 'tests'));
+        return 'codecept run ' . $envCommand . '-d ' . $path . ':<b>' . $test->getName() . '</b>';
+    }
+
+
+    /**
+     * Compare data with last entry in log — pre-check for duplicates
+     *
+     * @param $data
+     * @return bool
+     */
+    protected function compareWithPreviousLog($data)
+    {
+        if (end($this->log) == $data) {
+            return true;
+        }
+        return false;
     }
 
     /**
