@@ -103,16 +103,14 @@ class AllureRestLogExtension extends Extension
     {
         $data = $this->getCommandRunTest($e);
         $log = $this->log;
-        if (count($log) > 1) { // skip empty files - with only testname entry
-            $this->addToLog('Fail:' . $e->getFail()->getMessage());
-            foreach ($log as $entry) {
-                $data .= $this->formatRequestData($entry) . '<hr style="margin: 20px 0">';
-            }
-            $logName = 'requestLog' . time() . $e->getTest()->getName();
-            $logFile = codecept_output_dir($logName);
-            file_put_contents($logFile, $data);
-            $this->addAttachment($logFile, 'Request Log', 'text/html');
+        $this->addToLog('Fail:' . $e->getFail()->getMessage());
+        foreach ($log as $entry) {
+            $data .= $this->formatRequestData($entry) . '<hr style="margin: 20px 0">';
         }
+        $logName = 'requestLog' . time() . $e->getTest()->getName();
+        $logFile = codecept_output_dir($logName);
+        file_put_contents($logFile, $data);
+        $this->addAttachment($logFile, 'Request Log', 'text/html');
     }
 
     /**
