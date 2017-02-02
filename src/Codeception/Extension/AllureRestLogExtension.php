@@ -175,7 +175,7 @@ class AllureRestLogExtension extends Extension
         }
         $fileName = $test->getMetadata()->getFilename();
         $path = substr($fileName, strpos($fileName, 'tests'));
-        return 'codecept run ' . $envCommand . '-d ' . $path . ':<b>' . $test->getName() . '</b>';
+        return 'codecept run ' . $envCommand . '-d ' . $path . ':<b>' . $test->getName() . '$</b>';
     }
 
 
