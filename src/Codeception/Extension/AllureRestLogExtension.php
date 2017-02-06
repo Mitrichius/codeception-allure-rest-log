@@ -107,7 +107,8 @@ class AllureRestLogExtension extends Extension
         foreach ($log as $entry) {
             $data .= $this->formatRequestData($entry) . '<hr style="margin: 20px 0">';
         }
-        $logName = 'requestLog' . time() . $e->getTest()->getName();
+        $testName = $this->getTestName($e->getTest()->getName());
+        $logName = 'requestLog' . time() . $testName;
         $logFile = codecept_output_dir($logName);
         file_put_contents($logFile, $data);
         $this->addAttachment($logFile, 'Request Log', 'text/html');
@@ -175,7 +176,7 @@ class AllureRestLogExtension extends Extension
         }
         $fileName = $test->getMetadata()->getFilename();
         $path = substr($fileName, strpos($fileName, 'tests'));
-        return 'codecept run ' . $envCommand . '-d ' . $path . ':<b>' . $test->getName() . '$</b>';
+        return 'codecept run ' . $envCommand . '-d ' . $path . ':<b>' . $test->getName() . '</b>';
     }
 
 
@@ -282,5 +283,15 @@ class AllureRestLogExtension extends Extension
     protected function addToLog($data)
     {
         $this->log[] = $data;
+    }
+
+    protected function getTestName($originalName)
+    {
+        $dataSetTitle = null;
+        $datasetPosition = strpos($originalName, 'with data set');
+        if ($datasetPosition !== false) {
+            return substr($originalName, 0, $datasetPosition - 1);
+        }
+        return $originalName;
     }
 }
