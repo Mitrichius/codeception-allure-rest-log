@@ -207,7 +207,11 @@ class AllureRestLogExtension extends Extension
         } elseif ($this->isXml($data['response'])) {
             $data['response'] = htmlspecialchars($data['response'], ENT_XML1, 'UTF-8');
         }
-        $paramsPretty = $this->printArray($data['params']);
+        if (is_array($data['params'])) {
+            $paramsPretty = $this->printArray($data['params']);
+        } else {
+            $paramsPretty = json_encode(json_decode($data['params']), JSON_PRETTY_PRINT);
+        }
         $result =
             '<style type="text/css">div{margin: 10px 0;}</style>' .
             '<div style="color: grey">' . date('Y-m-d H:i:s', strtotime($data['date'])) . '</div>' .
