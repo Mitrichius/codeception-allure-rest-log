@@ -101,14 +101,18 @@ class AllureRestLogExtension extends Extension
      */
     protected function attachLog($e)
     {
-        $data = $this->getCommandRunTest($e);
+        $data = '<html><head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+            </head><body>';
+        $data .= $this->getCommandRunTest($e);
         $log = $this->log;
         $this->addToLog('Fail:' . $e->getFail()->getMessage());
         foreach ($log as $entry) {
             $data .= $this->formatRequestData($entry) . '<hr style="margin: 20px 0">';
         }
+        $data .= '</body></html>';
         $testName = $this->getTestName($e->getTest()->getName());
-        $logName = 'requestLog' . time() . $testName;
+        $logName = 'requestLog' . time() . $testName . '.html';
         $logFile = codecept_output_dir($logName);
         file_put_contents($logFile, $data);
         $this->addAttachment($logFile, 'Request Log', 'text/html');
@@ -203,14 +207,14 @@ class AllureRestLogExtension extends Extension
     protected function formatRequestData($data)
     {
         if ($this->isJson($data['response'])) {
-            $data['response'] = json_encode(json_decode($data['response']), JSON_PRETTY_PRINT);
+            $data['response'] = json_encode(json_decode($data['response']), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         } elseif ($this->isXml($data['response'])) {
             $data['response'] = htmlspecialchars($data['response'], ENT_XML1, 'UTF-8');
         }
         if (is_array($data['params'])) {
             $paramsPretty = $this->printArray($data['params']);
         } else {
-            $paramsPretty = json_encode(json_decode($data['params']), JSON_PRETTY_PRINT);
+            $paramsPretty = json_encode(json_decode($data['params']), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         }
         $result =
             '<style type="text/css">div{margin: 10px 0;}</style>' .
