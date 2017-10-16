@@ -172,6 +172,9 @@ class AllureRestLogExtension extends Extension
     protected function getCommandRunTest($e)
     {
         $test = $e->getTest();
+        if ($test instanceof \PHPUnit_Framework_SkippedTestCase) {
+            return "";
+        }
         $env = $test->getMetadata()->getCurrent('env');
         if ($env) {
             $envCommand = '--env ' . $env . ' ';
