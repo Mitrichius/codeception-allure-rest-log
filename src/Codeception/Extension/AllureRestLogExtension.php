@@ -130,7 +130,11 @@ class AllureRestLogExtension extends Extension
         {
             /** @var Client $client */
             $client = $rest->client;
-
+            
+            if ($client->getHistory()->isEmpty()) {
+                return [];
+            }
+            
             /** @var Response $response */
             $response = $client->getInternalResponse();
             if ($response) {
